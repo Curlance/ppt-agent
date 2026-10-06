@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/version-0.1.0-orange" alt="Version 0.1.0" />
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python 3.11+" />
   <img src="https://img.shields.io/badge/platform-Windows-0078D4" alt="Windows" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-22A699" alt="MIT" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial-FF9A55" alt="PolyForm Noncommercial" /></a>
 </p>
 <p align="center"><a href="#功能">功能</a> · <a href="#快速开始">快速开始</a> · <a href="#实际界面">实际界面</a> · <a href="#接入-agent">接入 agent</a> · <a href="#验证与边界">验证与边界</a></p>
 
@@ -140,4 +140,8 @@ tests/              单元测试、真机 COM 和浏览器测试
 
 [设计背景](项目介绍.md) 保留早期设计，完成情况以当前 README 和交付报告为准。运行记录、令牌、私钥、本机路径配置、备份与构建产物均不纳入仓库。
 
-项目采用 [MIT License](LICENSE)。Logo 的设计说明和生成提示词见 [品牌说明](assets/BRAND.md)。本项目与 Microsoft 无官方关联。
+## 许可证
+
+本项目公开源码，采用 [PolyForm Noncommercial License 1.0.0](LICENSE)。**仅授予许可条款规定的非商业用途权限，商业使用须事先取得作者的另行授权。** 具体权利与条件以 LICENSE 为准。商业授权请求可通过本仓库的 Issues 联系作者。
+
+Logo 的设计说明和生成提示词见 [品牌说明](assets/BRAND.md)。本项目与 Microsoft 无官方关联。

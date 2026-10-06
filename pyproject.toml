@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "让 agent 实时控制 PowerPoint：单一工具注册表驱动 MCP / HTTP+OpenAPI / CLI 三个面，全程可视。"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = { text = "PolyForm-Noncommercial-1.0.0" }
 
 dependencies = [
     "mcp>=2.3,<3",

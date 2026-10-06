@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/version-0.1.0-orange" alt="Version 0.1.0" />
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python 3.11+" />
   <img src="https://img.shields.io/badge/platform-Windows-0078D4" alt="Windows" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-22A699" alt="MIT" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial-FF9A55" alt="PolyForm Noncommercial" /></a>
 </p>
 <p align="center"><a href="#features">Features</a> · <a href="#quick-start">Quick start</a> · <a href="#screenshots">Screenshots</a> · <a href="#agent-integration">Integration</a> · <a href="#validation-and-limits">Validation</a></p>
 
@@ -134,4 +134,8 @@ tests/              Unit, real COM and browser tests
 
 [Design notes (Chinese)](项目介绍.md) preserve the early design; current completion status is documented here and in the validation report. Runtime records, tokens, private keys, local path configurations, backups and build artifacts are excluded from Git.
 
-Licensed under [MIT](LICENSE). See [brand notes](assets/BRAND.md) for the logo prompt. This project is not affiliated with Microsoft.
+## License
+
+The source is public under the [PolyForm Noncommercial License 1.0.0](LICENSE). **Only uses permitted by the noncommercial license are authorized; commercial use requires separate authorization from the author in advance.** LICENSE defines the applicable rights and conditions. Contact the author through this repository's Issues for commercial licensing.
+
+See [brand notes](assets/BRAND.md) for the logo prompt. This project is not affiliated with Microsoft.
