@@ -26,6 +26,7 @@ SELFTEST_KEY = r"Software\ppt-agent-selftest\PowerPoint\Security"
 
 
 @needs_windows
+@pytest.mark.com
 def test_msforms_catalog_is_populated() -> None:
     catalog = addin.msforms_clsids()
     assert catalog, "枚举不到 FM20.DLL 注册的控件，校验会退化成空转"
@@ -34,6 +35,7 @@ def test_msforms_catalog_is_populated() -> None:
 
 
 @needs_windows
+@pytest.mark.com
 def test_catalog_keys_are_normalised() -> None:
     """花括号/大小写不一致会让查找永远失败——这正是第一次跑出来的 bug。"""
     catalog = addin.msforms_clsids()
@@ -43,6 +45,7 @@ def test_catalog_keys_are_normalised() -> None:
 
 
 @needs_windows
+@pytest.mark.com
 def test_userform_clsid_is_known() -> None:
     """窗体本身的 CLSID 必须也在目录里，否则 .frm 连文件头都过不了。"""
     catalog = addin.msforms_clsids()
@@ -55,6 +58,7 @@ def test_userform_clsid_is_known() -> None:
 
 
 @needs_windows
+@pytest.mark.com
 def test_shipped_frm_is_valid() -> None:
     """我们实际分发的那份 .frm 必须零问题。"""
     text = (addin.SOURCE_DIR / "PPTAgentPanel.frm").read_text(encoding="utf-8")
