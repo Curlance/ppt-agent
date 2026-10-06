@@ -1,0 +1,2684 @@
+{
+  "components": {
+    "schemas": {
+      "CallBody": {
+        "description": "``POST /call`` 的请求体。\n\n必须定义在**模块级**：本模块用了 ``from __future__ import annotations``，\n若把它定义在 ``create_app`` 内部，FastAPI 解析注解时会去模块全局找而找不到，\n于是把 ``body`` 误判成查询参数。",
+        "properties": {
+          "args": {
+            "additionalProperties": true,
+            "description": "工具参数",
+            "title": "Args",
+            "type": "object"
+          },
+          "name": {
+            "description": "工具名，例如 ppt_open",
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CallBody",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "PaceBody": {
+        "description": "``POST /pace`` 的请求体。同样必须定义在模块级，理由见 ``CallBody``。",
+        "properties": {
+          "pace_ms": {
+            "description": "写操作之间的停顿毫秒数；0=极速，400≈正常，1500=慢速",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Pace Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "pace_ms"
+        ],
+        "title": "PaceBody",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "ppt_activate_body": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ppt_activate_body",
+        "type": "object"
+      },
+      "ppt_add_picture_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "minimum": 0.01,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "高度（磅）；留空按原图尺寸",
+            "title": "Height"
+          },
+          "left": {
+            "default": 60.0,
+            "description": "左边距（磅）",
+            "title": "Left",
+            "type": "number"
+          },
+          "path": {
+            "description": "图片的绝对路径",
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "top": {
+            "default": 60.0,
+            "description": "上边距（磅）",
+            "title": "Top",
+            "type": "number"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "minimum": 0.01,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "宽度（磅）；留空按原图尺寸",
+            "title": "Width"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ppt_add_picture_body",
+        "type": "object"
+      },
+      "ppt_add_slide_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "index": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "插到第几页；留空表示追加到末尾",
+            "title": "Index"
+          },
+          "layout": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "版式名称或序号；留空沿用最后一页的版式",
+            "title": "Layout"
+          }
+        },
+        "title": "ppt_add_slide_body",
+        "type": "object"
+      },
+      "ppt_add_textbox_body": {
+        "additionalProperties": false,
+        "properties": {
+          "align": {
+            "anyOf": [
+              {
+                "enum": [
+                  "left",
+                  "center",
+                  "right",
+                  "justify"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "段落对齐",
+            "title": "Align"
+          },
+          "bold": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "是否加粗",
+            "title": "Bold"
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "文字颜色，形如 #4D6BFE",
+            "title": "Color"
+          },
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "font_size": {
+            "anyOf": [
+              {
+                "maximum": 4000.0,
+                "minimum": 1.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "字号（磅）",
+            "title": "Font Size"
+          },
+          "height": {
+            "default": 80.0,
+            "description": "高度（磅）",
+            "minimum": 0.01,
+            "title": "Height",
+            "type": "number"
+          },
+          "left": {
+            "default": 60.0,
+            "description": "左边距（磅）",
+            "title": "Left",
+            "type": "number"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "text": {
+            "description": "文本框里的文字",
+            "title": "Text",
+            "type": "string"
+          },
+          "top": {
+            "default": 60.0,
+            "description": "上边距（磅）",
+            "title": "Top",
+            "type": "number"
+          },
+          "width": {
+            "default": 400.0,
+            "description": "宽度（磅）",
+            "minimum": 0.01,
+            "title": "Width",
+            "type": "number"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ppt_add_textbox_body",
+        "type": "object"
+      },
+      "ppt_close_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空表示当前活动演示",
+            "title": "Deck"
+          },
+          "save": {
+            "default": false,
+            "description": "是否先保存再关闭。默认否——未保存的改动会被丢弃",
+            "title": "Save",
+            "type": "boolean"
+          }
+        },
+        "title": "ppt_close_body",
+        "type": "object"
+      },
+      "ppt_decks_body": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "ppt_decks_body",
+        "type": "object"
+      },
+      "ppt_delete_shape_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "shape": {
+            "description": "形状名或序号（必填，不会默认删某个形状）",
+            "minLength": 1,
+            "title": "Shape",
+            "type": "string"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          }
+        },
+        "required": [
+          "shape"
+        ],
+        "title": "ppt_delete_shape_body",
+        "type": "object"
+      },
+      "ppt_delete_slide_body": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "default": 1,
+            "description": "连续删除几页",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "slide": {
+            "description": "要删除的页码，从 1 开始（必填）",
+            "title": "Slide",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "slide"
+        ],
+        "title": "ppt_delete_slide_body",
+        "type": "object"
+      },
+      "ppt_goto_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "slide": {
+            "description": "目标页码，从 1 开始",
+            "title": "Slide",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "slide"
+        ],
+        "title": "ppt_goto_body",
+        "type": "object"
+      },
+      "ppt_move_slide_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "slide": {
+            "description": "要移动的页码（必填）",
+            "title": "Slide",
+            "type": "integer"
+          },
+          "to": {
+            "description": "移动到第几页（必填）",
+            "minimum": 1.0,
+            "title": "To",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "slide",
+          "to"
+        ],
+        "title": "ppt_move_slide_body",
+        "type": "object"
+      },
+      "ppt_new_body": {
+        "additionalProperties": false,
+        "properties": {
+          "bring_to_front": {
+            "default": true,
+            "description": "新建后把 PowerPoint 切到最前，让用户看得见",
+            "title": "Bring To Front",
+            "type": "boolean"
+          },
+          "template": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "可选：以某个 .potx / .pptx 模板为底，需要绝对路径",
+            "title": "Template"
+          }
+        },
+        "title": "ppt_new_body",
+        "type": "object"
+      },
+      "ppt_open_body": {
+        "additionalProperties": false,
+        "properties": {
+          "bring_to_front": {
+            "default": true,
+            "description": "打开后把 PowerPoint 窗口切到最前，让用户看得见",
+            "title": "Bring To Front",
+            "type": "boolean"
+          },
+          "path": {
+            "description": "演示文件路径（.pptx / .ppt）",
+            "minLength": 1,
+            "title": "Path",
+            "type": "string"
+          },
+          "read_only": {
+            "default": false,
+            "description": "以只读方式打开，避免误改原文件",
+            "title": "Read Only",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "title": "ppt_open_body",
+        "type": "object"
+      },
+      "ppt_read_slide_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "include_geometry": {
+            "default": true,
+            "description": "是否读取位置与尺寸",
+            "title": "Include Geometry",
+            "type": "boolean"
+          },
+          "include_text": {
+            "default": true,
+            "description": "是否读取文字内容",
+            "title": "Include Text",
+            "type": "boolean"
+          },
+          "max_shapes": {
+            "default": 80,
+            "description": "最多返回多少个形状（含组合子形状）",
+            "maximum": 400.0,
+            "minimum": 1.0,
+            "title": "Max Shapes",
+            "type": "integer"
+          },
+          "max_table_cells": {
+            "default": 200,
+            "description": "每个表格最多读取多少个单元格；截断会明确标记",
+            "maximum": 2000.0,
+            "minimum": 1.0,
+            "title": "Max Table Cells",
+            "type": "integer"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          }
+        },
+        "title": "ppt_read_slide_body",
+        "type": "object"
+      },
+      "ppt_save_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "mode": {
+            "default": "save",
+            "description": "save=原地保存；copy=另存一份备份（不动当前文件）",
+            "enum": [
+              "save",
+              "copy"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "mode=copy 时的备份路径；留空自动放到 ppt-agent 的 backups 目录",
+            "title": "Path"
+          }
+        },
+        "title": "ppt_save_body",
+        "type": "object"
+      },
+      "ppt_select_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "shape": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "要选中的形状名或序号；留空只跳页不选中",
+            "title": "Shape"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码；留空表示不跳页",
+            "title": "Slide"
+          }
+        },
+        "title": "ppt_select_body",
+        "type": "object"
+      },
+      "ppt_set_geometry_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "minimum": 0.01,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "高度（磅）",
+            "title": "Height"
+          },
+          "left": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "左边距（磅）",
+            "title": "Left"
+          },
+          "rotation": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "旋转角度",
+            "title": "Rotation"
+          },
+          "shape": {
+            "description": "形状名、序号或组合 ref 路径（如 3/2；可用 title 指标题占位符）",
+            "minLength": 1,
+            "title": "Shape",
+            "type": "string"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "top": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "上边距（磅）",
+            "title": "Top"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "minimum": 0.01,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "宽度（磅）",
+            "title": "Width"
+          }
+        },
+        "required": [
+          "shape"
+        ],
+        "title": "ppt_set_geometry_body",
+        "type": "object"
+      },
+      "ppt_set_notes_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "text": {
+            "description": "备注内容；传空字符串表示清空",
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ppt_set_notes_body",
+        "type": "object"
+      },
+      "ppt_set_pace_body": {
+        "additionalProperties": false,
+        "properties": {
+          "pace_ms": {
+            "default": 400,
+            "description": "写操作之间停顿的毫秒数；0=极速，400≈正常，1500=慢速看得清",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Pace Ms",
+            "type": "integer"
+          }
+        },
+        "title": "ppt_set_pace_body",
+        "type": "object"
+      },
+      "ppt_set_table_cell_body": {
+        "additionalProperties": false,
+        "properties": {
+          "align": {
+            "anyOf": [
+              {
+                "enum": [
+                  "left",
+                  "center",
+                  "right",
+                  "justify"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "段落对齐",
+            "title": "Align"
+          },
+          "bold": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "是否加粗",
+            "title": "Bold"
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "文字颜色，如 #4D6BFE",
+            "title": "Color"
+          },
+          "column": {
+            "description": "列号，从 1 开始",
+            "minimum": 1.0,
+            "title": "Column",
+            "type": "integer"
+          },
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "font_size": {
+            "anyOf": [
+              {
+                "maximum": 4000.0,
+                "minimum": 1.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "字号（磅）",
+            "title": "Font Size"
+          },
+          "row": {
+            "description": "行号，从 1 开始",
+            "minimum": 1.0,
+            "title": "Row",
+            "type": "integer"
+          },
+          "shape": {
+            "description": "表格形状名称或 ref（支持组合序号路径，如 3/2）",
+            "minLength": 1,
+            "title": "Shape",
+            "type": "string"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "text": {
+            "description": "单元格文字；空字符串清空",
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "shape",
+          "row",
+          "column",
+          "text"
+        ],
+        "title": "ppt_set_table_cell_body",
+        "type": "object"
+      },
+      "ppt_set_text_body": {
+        "additionalProperties": false,
+        "properties": {
+          "align": {
+            "anyOf": [
+              {
+                "enum": [
+                  "left",
+                  "center",
+                  "right",
+                  "justify"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "段落对齐",
+            "title": "Align"
+          },
+          "bold": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "是否加粗",
+            "title": "Bold"
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "文字颜色，形如 #4D6BFE",
+            "title": "Color"
+          },
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "font_size": {
+            "anyOf": [
+              {
+                "maximum": 4000.0,
+                "minimum": 1.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "字号（磅）",
+            "title": "Font Size"
+          },
+          "shape": {
+            "description": "形状名、序号或组合 ref 路径（如 3/2；可用 title 指标题占位符）；先从 ppt_read_slide 里看",
+            "minLength": 1,
+            "title": "Shape",
+            "type": "string"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "页码，从 1 开始；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "text": {
+            "description": "新的文字内容；空字符串清空文字",
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "shape",
+          "text"
+        ],
+        "title": "ppt_set_text_body",
+        "type": "object"
+      },
+      "ppt_shot_body": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "default": 1,
+            "description": "连续导出几页",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "format": {
+            "default": "png",
+            "description": "高清图格式：png 清晰、jpg 更小",
+            "enum": [
+              "png",
+              "jpg"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "goto": {
+            "default": true,
+            "description": "截图后把视图切到第一张，便于用户跟随",
+            "title": "Goto",
+            "type": "boolean"
+          },
+          "inline": {
+            "default": true,
+            "description": "是否生成给模型内联查看的缩略图",
+            "title": "Inline",
+            "type": "boolean"
+          },
+          "slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "起始页码；留空用当前正在看的那页",
+            "title": "Slide"
+          },
+          "thumb_width": {
+            "default": 1024,
+            "description": "给模型看的缩略图宽度（像素）",
+            "maximum": 1600.0,
+            "minimum": 320.0,
+            "title": "Thumb Width",
+            "type": "integer"
+          },
+          "width": {
+            "default": 1280,
+            "description": "高清图宽度（像素）",
+            "maximum": 3840.0,
+            "minimum": 320.0,
+            "title": "Width",
+            "type": "integer"
+          }
+        },
+        "title": "ppt_shot_body",
+        "type": "object"
+      },
+      "ppt_slides_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "from_slide": {
+            "default": 1,
+            "description": "起始页，从 1 开始",
+            "title": "From Slide",
+            "type": "integer"
+          },
+          "limit": {
+            "default": 60,
+            "description": "本次最多返回多少页",
+            "maximum": 300.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "to_slide": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "结束页（含）；留空表示到最后一页",
+            "title": "To Slide"
+          }
+        },
+        "title": "ppt_slides_body",
+        "type": "object"
+      },
+      "ppt_status_body": {
+        "additionalProperties": false,
+        "properties": {
+          "list_slides": {
+            "default": false,
+            "description": "是否列出每个演示的每一页标题（大文件会慢）",
+            "title": "List Slides",
+            "type": "boolean"
+          }
+        },
+        "title": "ppt_status_body",
+        "type": "object"
+      },
+      "ppt_undo_body": {
+        "additionalProperties": false,
+        "properties": {
+          "deck": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "演示名、路径或序号；留空用当前活动演示",
+            "title": "Deck"
+          },
+          "steps": {
+            "default": 1,
+            "description": "最多撤销几步",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Steps",
+            "type": "integer"
+          }
+        },
+        "title": "ppt_undo_body",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "让 agent 实时控制正在运行的 PowerPoint。\n\n同一套工具同时暴露为 MCP 与 HTTP/OpenAPI；所有操作都会广播到观察台，用户随时看得见 agent 在做什么。\n\n**鉴权**：除 `/health` 外都需要令牌，用 `X-PPT-Token` 头或 `?token=` 传入；令牌在守护进程的 runtime.json 里，用 `pptctl url` 可打印观察台地址。",
+    "title": "ppt-agent",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/call": {
+      "post": {
+        "operationId": "call_call_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CallBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "按名字调用任意工具",
+        "tags": [
+          "invoke"
+        ]
+      }
+    },
+    "/events": {
+      "get": {
+        "operationId": "events_events_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "SSE 事件流：agent 每一步操作",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/feed": {
+      "get": {
+        "description": "一次请求拿全面板要显示的东西。\n\nSSE（``/events``）适合网页；但 VBA、PowerShell 这类客户端不方便消费长连接，\n所以同样一份数据再给一个轮询端点——PowerPoint 里的加载项面板就靠它。",
+        "operationId": "feed_feed_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 40,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Feed Feed Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "面板快照：状态 + 最近的操作流水",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/feed.txt": {
+      "get": {
+        "description": "与 ``/feed`` 同一份数据，但用**纯文本**。\n\n为什么要有这个：VBA 里解析 JSON 要手写解析器，脆弱又长。纯文本格式\n一行一条、用 `` | `` 分隔，VBA 一句 ``Split`` 就能用；PowerShell 里\n``curl`` 直接看得懂，调试也方便。",
+        "operationId": "feed_text_feed_txt_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 40,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "面板快照（纯文本，给 VBA/PowerShell 用）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Health Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "存活探针（唯一无需令牌的端点）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/live": {
+      "get": {
+        "description": "给观察台当实时监视器用。\n\n``ppt_shot`` 是留档快照，这个是**取景**：覆盖同一个文件、不产缩略图、不进事件流，\n所以可以每隔一两秒调一次。它读的是 PowerPoint 的当前状态，因此**用户在\nPowerPoint 里自己翻页或改内容，观察台也看得见**。",
+        "operationId": "live_live_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "width",
+            "required": false,
+            "schema": {
+              "default": 960,
+              "title": "Width",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "slide",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Slide"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "实时取景：把此刻这一页现拍一张 JPEG",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/pace": {
+      "post": {
+        "operationId": "set_pace_pace_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaceBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Set Pace Pace Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "设置跟速（观察台与任务窗格用）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/shots/{name}": {
+      "get": {
+        "operationId": "shot_file_shots__name__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "取一张截图文件（观察台与任务窗格用）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/shutdown": {
+      "post": {
+        "operationId": "shutdown_shutdown_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Shutdown Shutdown Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "急停：停止守护进程（不会关闭 PowerPoint）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/state": {
+      "get": {
+        "operationId": "state_state_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response State State Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "守护进程与 PowerPoint 的当前状态",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/strip.txt": {
+      "get": {
+        "description": "一行纯文本，服务端已经拼好。\n\n为什么单独开一个端点而不是让客户端读 ``/feed.txt``：\n\n- 宿主界面里的组件拿不到令牌（它跑在渲染进程里，读不到 runtime.json），\n  而让宿主去实现\"取令牌\"的握手会引入一堆我验证不了的契约；\n- 这一行**不含任何密钥**，只有版本、演示名、页码、跟速和最近一步的中文摘要。\n\n所以它按 ``/addin/`` 同样的规矩放行：只认本机 Host。**端口一旦被隧道到公网，\nHost 会变成公网域名，这里就会要求令牌。**\n\n另外还要放行**本机来源的跨源读取**（见 :data:`_LOCAL_ORIGIN`）——\n宿主界面在另一个端口上，不放行的话浏览器会把这个响应整个拦掉。",
+        "operationId": "strip_strip_txt_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "一行状态（给宿主 UI 的窄条用）",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/tools": {
+      "get": {
+        "operationId": "tools_tools_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Tools Tools Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "列出全部工具及其 JSON Schema",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/tools/ppt_activate": {
+      "post": {
+        "description": "把 PowerPoint 窗口带到最前面\n\n- 行为：`idempotent`（read=只读，write=写入，destroy=破坏性）\n- 返回：是否成功",
+        "operationId": "ppt_activate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_activate_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把 PowerPoint 窗口带到最前面",
+        "tags": [
+          "idempotent"
+        ]
+      }
+    },
+    "/tools/ppt_add_picture": {
+      "post": {
+        "description": "把一张本地图片插到某一页（必须给绝对路径）\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：新图片形状的名称与序号",
+        "operationId": "ppt_add_picture",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_add_picture_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把一张本地图片插到某一页（必须给绝对路径）",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_add_slide": {
+      "post": {
+        "description": "在指定位置插入一页新幻灯片\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：新页的页码、所用版式与当前总页数",
+        "operationId": "ppt_add_slide",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_add_slide_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "在指定位置插入一页新幻灯片",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_add_textbox": {
+      "post": {
+        "description": "在某一页加一个文本框并写入文字\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：新形状的名称与序号，后续可用它来改文字或位置",
+        "operationId": "ppt_add_textbox",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_add_textbox_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "在某一页加一个文本框并写入文字",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_close": {
+      "post": {
+        "description": "关闭一个已打开的演示（默认不保存，避免误改用户文件）\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：被关闭演示的名称",
+        "operationId": "ppt_close",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_close_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "关闭一个已打开的演示（默认不保存，避免误改用户文件）",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_decks": {
+      "post": {
+        "description": "列出 PowerPoint 里打开着的演示，以及各自停在第几页\n\n- 行为：`read`（read=只读，write=写入，destroy=破坏性）\n- 返回：每份演示的名称、路径、页数、页面尺寸，以及哪一份是活动演示",
+        "operationId": "ppt_decks",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_decks_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "列出 PowerPoint 里打开着的演示，以及各自停在第几页",
+        "tags": [
+          "read"
+        ]
+      }
+    },
+    "/tools/ppt_delete_shape": {
+      "post": {
+        "description": "删掉某一页里的某个形状\n\n- 行为：`destroy`（read=只读，write=写入，destroy=破坏性）\n- 返回：被删形状的名称与剩余形状数",
+        "operationId": "ppt_delete_shape",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_delete_shape_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "删掉某一页里的某个形状",
+        "tags": [
+          "destroy"
+        ]
+      }
+    },
+    "/tools/ppt_delete_slide": {
+      "post": {
+        "description": "删除指定的幻灯片（必须显式给页码，不会默认删当前页）\n\n- 行为：`destroy`（read=只读，write=写入，destroy=破坏性）\n- 返回：删除了第几页、剩余总页数",
+        "operationId": "ppt_delete_slide",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_delete_slide_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "删除指定的幻灯片（必须显式给页码，不会默认删当前页）",
+        "tags": [
+          "destroy"
+        ]
+      }
+    },
+    "/tools/ppt_goto": {
+      "post": {
+        "description": "把 PowerPoint 切到指定页，让用户看得见你在看哪一页\n\n- 行为：`idempotent`（read=只读，write=写入，destroy=破坏性）\n- 返回：切换后的页码",
+        "operationId": "ppt_goto",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_goto_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把 PowerPoint 切到指定页，让用户看得见你在看哪一页",
+        "tags": [
+          "idempotent"
+        ]
+      }
+    },
+    "/tools/ppt_move_slide": {
+      "post": {
+        "description": "把某一页挪到另一个位置\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：移动后的页码",
+        "operationId": "ppt_move_slide",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_move_slide_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把某一页挪到另一个位置",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_new": {
+      "post": {
+        "description": "新建一份空白演示并显示出来\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：新演示的摘要（页数、路径可能为「未保存」）",
+        "operationId": "ppt_new",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_new_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "新建一份空白演示并显示出来",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_open": {
+      "post": {
+        "description": "打开一个演示文稿并让它在 PowerPoint 里显示出来\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：被打开演示的摘要（页数、路径、是否只读）",
+        "operationId": "ppt_open",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_open_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "打开一个演示文稿并让它在 PowerPoint 里显示出来",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_read_slide": {
+      "post": {
+        "description": "读取某一页里所有形状的文字、位置、尺寸与类型\n\n- 行为：`read`（read=只读，write=写入，destroy=破坏性）\n- 返回：该页版式、备注与形状明细；包含表格单元格、组合子形状及可用于编辑的 ref 序号路径",
+        "operationId": "ppt_read_slide",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_read_slide_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "读取某一页里所有形状的文字、位置、尺寸与类型",
+        "tags": [
+          "read"
+        ]
+      }
+    },
+    "/tools/ppt_save": {
+      "post": {
+        "description": "保存这份演示；也可以先另存一份备份再改\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：保存结果；mode=copy 时给出备份文件路径",
+        "operationId": "ppt_save",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_save_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "保存这份演示；也可以先另存一份备份再改",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_select": {
+      "post": {
+        "description": "跳到某一页并选中某个形状，让用户看得见 agent 正在动哪里\n\n- 行为：`idempotent`（read=只读，write=写入，destroy=破坏性）\n- 返回：当前页码与选中的形状",
+        "operationId": "ppt_select",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_select_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "跳到某一页并选中某个形状，让用户看得见 agent 正在动哪里",
+        "tags": [
+          "idempotent"
+        ]
+      }
+    },
+    "/tools/ppt_set_geometry": {
+      "post": {
+        "description": "改某个形状的位置与尺寸（只改你给的项）\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：改动前后的位置尺寸",
+        "operationId": "ppt_set_geometry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_set_geometry_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "改某个形状的位置与尺寸（只改你给的项）",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_set_notes": {
+      "post": {
+        "description": "替换某一页的备注文字\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：写入后的备注内容",
+        "operationId": "ppt_set_notes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_set_notes_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "替换某一页的备注文字",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_set_pace": {
+      "post": {
+        "description": "设置每一步之间的停顿，好让人跟得上 agent 的操作\n\n- 行为：`idempotent`（read=只读，write=写入，destroy=破坏性）\n- 返回：生效后的停顿毫秒数",
+        "operationId": "ppt_set_pace",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_set_pace_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "设置每一步之间的停顿，好让人跟得上 agent 的操作",
+        "tags": [
+          "idempotent"
+        ]
+      }
+    },
+    "/tools/ppt_set_table_cell": {
+      "post": {
+        "description": "修改真实 PowerPoint 表格中指定单元格的文字与格式\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：目标页、表格、行列和修改前后的文字",
+        "operationId": "ppt_set_table_cell",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_set_table_cell_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "修改真实 PowerPoint 表格中指定单元格的文字与格式",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_set_text": {
+      "post": {
+        "description": "把某一页某个形状里的文字替换掉（可同时设字号、加粗、颜色、对齐）\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：被改形状的名称与序号，以及实际生效的格式",
+        "operationId": "ppt_set_text",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_set_text_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把某一页某个形状里的文字替换掉（可同时设字号、加粗、颜色、对齐）",
+        "tags": [
+          "write"
+        ]
+      }
+    },
+    "/tools/ppt_shot": {
+      "post": {
+        "description": "把某一页导出成图片：给人看高清 PNG，给模型看压缩缩略图\n\n- 行为：`read`（read=只读，write=写入，destroy=破坏性）\n- 返回：每页的高清图片与缩略图（含路径与可访问 URL）",
+        "operationId": "ppt_shot",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_shot_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "把某一页导出成图片：给人看高清 PNG，给模型看压缩缩略图",
+        "tags": [
+          "read"
+        ]
+      }
+    },
+    "/tools/ppt_slides": {
+      "post": {
+        "description": "逐页列出标题与形状数量，快速了解这份演示讲了什么\n\n- 行为：`read`（read=只读，write=写入，destroy=破坏性）\n- 返回：页码、标题、形状数；可指定范围并对结果做截断",
+        "operationId": "ppt_slides",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_slides_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "逐页列出标题与形状数量，快速了解这份演示讲了什么",
+        "tags": [
+          "read"
+        ]
+      }
+    },
+    "/tools/ppt_status": {
+      "post": {
+        "description": "查看 PowerPoint 是否在运行、有哪些演示打开着、当前停在第几页\n\n- 行为：`read`（read=只读，write=写入，destroy=破坏性）\n- 返回：会话状态对象：解释器、COM 会话、已打开的演示列表",
+        "operationId": "ppt_status",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_status_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "查看 PowerPoint 是否在运行、有哪些演示打开着、当前停在第几页",
+        "tags": [
+          "read"
+        ]
+      }
+    },
+    "/tools/ppt_undo": {
+      "post": {
+        "description": "撤销上一步操作（用的是 PowerPoint 自己的撤销栈）\n\n- 行为：`write`（read=只读，write=写入，destroy=破坏性）\n- 返回：实际撤销了几步、为什么停下",
+        "operationId": "ppt_undo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ppt_undo_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "成功"
+          },
+          "400": {
+            "description": "工具报错（响应体里带 error.code / error.message）"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "撤销上一步操作（用的是 PowerPoint 自己的撤销栈）",
+        "tags": [
+          "write"
+        ]
+      }
+    }
+  }
+}

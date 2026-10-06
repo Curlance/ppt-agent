@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# 运行时产物（不纳入版本控制）
+runtime/
+logs/
+shots/
+data/
+backups/
+dist/
+build/
+local-docs/
+.env
+.env.*
+*.key
+*.pem
+runtime.json
+daemon.pid
+dsh-bundle/cordis.patch.yml
+
+# Office 加载项
+addin/build/
+addin/export/
+addin/*.ppam

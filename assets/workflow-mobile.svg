@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="670" viewBox="0 0 600 670" role="img" aria-labelledby="title desc">
+  <title id="title">ppt-agent workflow</title>
+  <desc id="desc">Agent → serial COM → visible PowerPoint. The observer displays a live preview and activity feed.</desc>
+  <rect width="600" height="670" rx="24" fill="#141b2b"/>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="34" y="48" fill="#ff9a55" font-size="16" font-weight="700" letter-spacing="2">PPT-AGENT / LIVE POWERPOINT</text>
+    <text x="34" y="91" fill="#ffffff" font-size="29" font-weight="700">See every step.</text>
+    <text x="34" y="122" fill="#bcc7da" font-size="17">Read → Edit → Verify</text>
+    <g fill="#1e293e" stroke="#354561" stroke-width="2">
+      <rect x="34" y="156" width="532" height="112" rx="18"/>
+      <rect x="34" y="312" width="532" height="112" rx="18"/>
+      <rect x="34" y="468" width="532" height="112" rx="18" stroke="#ff9a55"/>
+    </g>
+    <g stroke="#4dd9e8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M300 280v20m-8-8 8 8 8-8"/>
+      <path d="M300 436v20m-8-8 8 8 8-8"/>
+    </g>
+    <g fill="#ffffff" font-size="24" font-weight="700">
+      <text x="60" y="201">AI agent</text>
+      <text x="60" y="357">Serial COM / STA</text>
+      <text x="60" y="513">Visible PowerPoint</text>
+    </g>
+    <g fill="#bcc7da" font-size="17">
+      <text x="60" y="237">MCP · HTTP · CLI</text>
+      <text x="60" y="393">24 tools · One daemon</text>
+      <text x="60" y="549">Follow slide &amp; shape · Read back</text>
+    </g>
+    <circle cx="40" cy="623" r="5" fill="#4dd9e8"/>
+    <text x="58" y="629" fill="#4dd9e8" font-size="16">Live preview · Activity feed · Pacing</text>
+  </g>
+</svg>
